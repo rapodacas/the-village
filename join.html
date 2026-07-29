@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Village — Join Our Network</title>
+<style>
+  :root { --brand: #2f7d7a; --brand-light: #3f9c98; --brand-bg: #eef6f5; --accent: #ef8354; --accent-dark: #d97444; --text: #1a1a1a; --muted: #555; --bg: #fff; --card: #f8f9fa; --border: #e2e6e6; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.7; }
+  .tab-bar { display: flex; justify-content: center; background: #23514f; padding: 0; position: sticky; top: 0; z-index: 10; }
+  .tab-bar a { color: rgba(255,255,255,0.7); text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; border-bottom: 3px solid transparent; }
+  .tab-bar a:hover, .tab-bar a.active { color: #fff; border-bottom-color: var(--accent); }
+  .hero { text-align: center; padding: 70px 24px 46px; }
+  .hero h1 { font-size: 2.5rem; font-weight: 700; color: var(--brand); letter-spacing: -1px; }
+  .hero .tagline { font-size: 1.2rem; color: var(--muted); margin-top: 8px; }
+  .container { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 40px 0; }
+  section:nth-child(even) { background: var(--brand-bg); }
+  h2 { font-size: 1.5rem; color: var(--brand); margin-bottom: 16px; }
+  p { margin-bottom: 14px; }
+  .big-number { text-align: center; padding: 44px 24px; }
+  .big-number .num { font-size: 3.4rem; font-weight: 700; color: var(--brand); line-height: 1; }
+  .big-number .label { font-size: 1.15rem; color: var(--muted); margin-top: 8px; }
+  .big-number .compare { font-size: 0.98rem; color: var(--accent-dark); margin-top: 12px; font-weight: 600; }
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; margin: 30px 0; align-items: stretch; }
+  .vs-them, .vs-us { padding: 26px; border-radius: 12px; }
+  .vs-them { background: #fafafa; border: 1px solid var(--border); }
+  .vs-us { background: var(--brand-bg); border: 2px solid var(--brand); }
+  .vs-divider { display: flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 1.3rem; font-weight: 700; color: var(--muted); }
+  .vs-them h3 { color: var(--muted); margin-bottom: 12px; }
+  .vs-us h3 { color: var(--brand); margin-bottom: 12px; }
+  .vs-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .vs-item:last-child { border: none; }
+  .vs-item .val { font-weight: 700; }
+  .vs-them .val { color: #c0653a; }
+  .vs-us .val { color: var(--brand); }
+  .simple-list { list-style: none; margin: 20px 0; }
+  .simple-list li { padding: 14px 16px 14px 48px; position: relative; background: var(--bg); border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 0.95rem; }
+  .simple-list li::before { content: "\2713"; position: absolute; left: 16px; top: 13px; width: 24px; height: 24px; background: var(--brand); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+  .pricing { text-align: center; margin: 30px 0; }
+  .price-box { display: inline-block; background: var(--bg); border: 2px solid var(--brand); border-radius: 16px; padding: 30px 44px; }
+  .price-main { font-size: 1rem; color: var(--muted); margin-bottom: 6px; }
+  .price-amount { font-size: 2.3rem; font-weight: 700; color: var(--brand); }
+  .price-amount span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+  .price-note { font-size: 0.9rem; color: var(--muted); margin-top: 8px; }
+  .price-free { display: inline-block; margin-top: 12px; background: var(--accent); color: #fff; padding: 4px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
+  .cta { text-align: center; padding: 46px 24px; background: linear-gradient(135deg, var(--brand), var(--brand-light)); color: #fff; }
+  .cta h2 { color: #fff; margin-bottom: 12px; }
+  .cta p { color: rgba(255,255,255,0.85); max-width: 500px; margin: 0 auto 24px; }
+  .cta a { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 14px 36px; border-radius: 8px; font-weight: 700; font-size: 1.05rem; }
+  .cta a:hover { background: var(--accent-dark); }
+  .cta .phone { margin-top: 16px; font-size: 1.05rem; opacity: 0.9; }
+  .quote { background: var(--bg); border-left: 4px solid var(--accent); padding: 18px 22px; border-radius: 0 8px 8px 0; margin: 24px 0; font-style: italic; color: var(--muted); }
+  footer { text-align: center; padding: 20px; color: var(--muted); font-size: 0.8rem; }
+  footer a { color: var(--brand); }
+  @media (max-width: 650px) { .vs { grid-template-columns: 1fr; } .vs-divider { padding: 12px 0; } .big-number .num { font-size: 2.8rem; } .hero h1 { font-size: 1.9rem; } .tab-bar a { padding: 14px 18px; font-size: 0.85rem; } }
+</style>
+</head>
+<body>
+
+<div class="tab-bar">
+  <a href="#families" class="active">For Families</a>
+  <a href="#providers">For Providers</a>
+</div>
+
+<!-- ==================== FAMILIES ==================== -->
+<div id="families">
+<div class="hero">
+  <h1>The Right Help, From Someone You Trust</h1>
+  <div class="tagline">Vetted special-needs support, matched by a special-education teacher</div>
+</div>
+
+<div class="big-number" style="background:var(--brand-bg);">
+  <div class="num">Personally matched</div>
+  <div class="label">Every provider background-checked and chosen for your child</div>
+  <div class="compare">No more Facebook-group guesswork.</div>
+</div>
+
+<section>
+<div class="container">
+  <div class="vs">
+    <div class="vs-them">
+      <h3>Doing It Alone</h3>
+      <div class="vs-item">Finding someone: <span class="val">months of searching</span></div>
+      <div class="vs-item">Vetting: <span class="val">you have no way to know</span></div>
+      <div class="vs-item">Wrong fit: <span class="val">start over from scratch</span></div>
+      <div class="vs-item">Guidance: <span class="val">you're on your own</span></div>
+    </div>
+    <div class="vs-divider">vs</div>
+    <div class="vs-us">
+      <h3>With The Village</h3>
+      <div class="vs-item">Finding someone: <span class="val">matched in days</span></div>
+      <div class="vs-item">Vetting: <span class="val">Live Scan + TrustLine screened</span></div>
+      <div class="vs-item">Wrong fit: <span class="val">free replacement</span></div>
+      <div class="vs-item">Guidance: <span class="val">a teacher in your corner</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2>What You Get</h2>
+  <ul class="simple-list">
+    <li>A provider matched to your child's needs, personality, and goals</li>
+    <li>Every provider Live Scan (DOJ/FBI) and TrustLine background-checked</li>
+    <li>Credentials and references verified &mdash; not a stranger off the internet</li>
+    <li>Free replacement if the match isn't right</li>
+    <li>Someone who knows the system personally, guiding you through it</li>
+  </ul>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2>Simple Pricing</h2>
+  <div class="pricing">
+    <div class="price-box">
+      <div class="price-main">One-time matching fee</div>
+      <div class="price-amount">$299</div>
+      <div class="price-note" style="margin-bottom:20px;">Covers vetting, matching, and getting you started</div>
+      <div class="price-main">Monthly membership</div>
+      <div class="price-amount">$99<span>/month</span></div>
+      <div class="price-note">Ongoing matching support, replacement guarantee, and check-ins</div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--muted); margin-top:16px;">You and your provider agree on their rate directly &mdash; The Village suggests a fair range but doesn't set it. Payments run securely through Stripe Connect, straight to your provider, with a small 5% service fee. <a href="disclosure.html" style="color:var(--brand);">Read our disclosure</a>.</p>
+</div>
+</section>
+
+<div class="cta">
+  <h2>Find the Right Support</h2>
+  <p>Tell us about your child. We'll find the right match.</p>
+  <a href="mailto:star.roxxy@gmail.com?subject=Family%20Inquiry%20-%20The%20Village">Get Started</a>
+  <div class="phone">Or call/text Roxy</div>
+</div>
+</div>
+
+<!-- ==================== PROVIDERS ==================== -->
+<div id="providers">
+<div class="hero" style="padding-top:50px;">
+  <h1>Do Work That Matters. Fill Your Practice.</h1>
+  <div class="tagline">Join San Diego County's vetted special-needs provider network</div>
+</div>
+
+<div class="big-number" style="background:var(--brand-bg);">
+  <div class="num">You keep your rate</div>
+  <div class="label">Families come to you &mdash; we never take a cut of your pay</div>
+  <div class="compare">Steady referrals, matched to your expertise.</div>
+</div>
+
+<section>
+<div class="container">
+  <div class="vs">
+    <div class="vs-them">
+      <h3>Going It Alone</h3>
+      <div class="vs-item">Clients: <span class="val">constant marketing hustle</span></div>
+      <div class="vs-item">Trust: <span class="val">you prove it every time</span></div>
+      <div class="vs-item">Fit: <span class="val">whoever finds you</span></div>
+      <div class="vs-item">Rate: <span class="val">your own, but hard-won</span></div>
+    </div>
+    <div class="vs-divider">vs</div>
+    <div class="vs-us">
+      <h3>With The Village</h3>
+      <div class="vs-item">Clients: <span class="val">matched referrals to you</span></div>
+      <div class="vs-item">Trust: <span class="val">a "vetted" badge does it for you</span></div>
+      <div class="vs-item">Fit: <span class="val">matched to your strengths</span></div>
+      <div class="vs-item">Rate: <span class="val">you set it, you keep it</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2>What You Get</h2>
+  <ul class="simple-list">
+    <li>Referrals matched to your specialty, schedule, and style</li>
+    <li>You set your own rate &mdash; we suggest a fair range, you and the family agree</li>
+    <li>Paid your full rate directly through Stripe Connect &mdash; we never take a cut of your pay</li>
+    <li>A background-check + credential badge that builds instant trust</li>
+    <li>You stay independent &mdash; your own practice, your own clients</li>
+  </ul>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2>What It Costs &amp; What We Ask</h2>
+  <div class="pricing">
+    <div class="price-box">
+      <div class="price-main">Monthly membership</div>
+      <div class="price-amount">$49<span>/month</span></div>
+      <div class="price-note">No percentage of your pay. Referrals matched to you.</div>
+      <div class="price-free">First 90 days free</div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--muted); margin-top:8px;">To list, every provider completes <strong>Live Scan + TrustLine</strong> screening, verifies credentials and references, and agrees to our scope terms (advocates are not attorneys; coaches and tutors do not provide medical or therapeutic treatment). Providers are independent contractors, not employees of The Village.</p>
+  <div class="quote">"I'm great at what I do. What I'm not great at is marketing. The Village sends me families who actually need my help &mdash; and I keep every dollar I earn."</div>
+</div>
+</section>
+
+<div class="cta">
+  <h2>Join the Network</h2>
+  <p>We're building our roster of vetted special-needs providers across San Diego County. Get in early.</p>
+  <a href="mailto:star.roxxy@gmail.com?subject=Provider%20Inquiry%20-%20The%20Village">Apply to Join</a>
+  <div class="phone">Or call/text Roxy</div>
+</div>
+</div>
+
+<footer>&copy; 2026 The Village &mdash; San Diego County Special-Needs Support Registry &middot; <a href="disclosure.html">Registry &amp; Independent Contractor Disclosure</a></footer>
+</body>
+</html>

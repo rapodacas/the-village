@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Village — Operations Dashboard</title>
+<style>
+  :root { --brand: #2f7d7a; --brand-light: #3f9c98; --brand-bg: #eef6f5; --accent: #ef8354; --text: #1a1a1a; --muted: #555; --bg: #fff; --card: #f8f9fa; --border: #e0e0e0; --red: #c62828; --yellow: #f9a825; --green: #2e7d32; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: #f5f5f5; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, #23514f, var(--brand)); color: #fff; padding: 32px 24px 24px; }
+  .header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; }
+  .header .sub { font-size: 0.95rem; opacity: 0.8; margin-top: 4px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  .readiness { background: var(--bg); border-radius: 12px; padding: 24px 28px; margin: -28px 24px 24px; max-width: 900px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 16px rgba(0,0,0,0.08); position: relative; z-index: 2; }
+  .readiness h2 { font-size: 1.1rem; color: var(--muted); margin-bottom: 12px; }
+  .meter-bar { height: 20px; background: var(--border); border-radius: 10px; overflow: hidden; }
+  .meter-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
+  .meter-label { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+
+  .step-card { background: var(--bg); border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden; }
+  .step-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .step-header:hover { background: var(--card); }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; color: #fff; flex-shrink: 0; }
+  .step-title { flex: 1; }
+  .step-title h3 { font-size: 1.05rem; color: var(--brand); }
+  .step-title .desc { font-size: 0.85rem; color: var(--muted); }
+  .step-status { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 12px; white-space: nowrap; }
+  .step-toggle { font-size: 1.2rem; color: var(--muted); transition: transform 0.2s; }
+  .step-card.open .step-toggle { transform: rotate(180deg); }
+  .step-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .step-card.open .step-body { display: block; padding-top: 20px; }
+
+  .tool-list { list-style: none; }
+  .tool-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .tool-item:last-child { border: none; }
+  .tool-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+  .tool-icon.absent { background: #fce4ec; color: var(--red); }
+  .tool-icon.ready { background: #e8f5e9; color: var(--green); }
+  .tool-info { flex: 1; }
+  .tool-name { font-weight: 600; font-size: 0.95rem; }
+  .tool-name a { color: var(--brand); text-decoration: none; }
+  .tool-name a:hover { text-decoration: underline; }
+  .tool-desc { font-size: 0.82rem; color: var(--muted); }
+  .tool-action { font-size: 0.8rem; }
+  .tool-action button { background: var(--brand); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+  .tool-action button:hover { background: var(--brand-light); }
+  .tool-action .done-label { color: var(--green); font-weight: 600; }
+
+  /* Chat panel */
+  .chat-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; }
+  .chat-overlay.open { display: flex; justify-content: center; align-items: center; }
+  .chat-panel { background: var(--bg); width: 95%; max-width: 700px; height: 85vh; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+  .chat-header { background: var(--brand); color: #fff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .chat-header h3 { font-size: 1rem; }
+  .chat-close { background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; padding: 0 4px; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 20px; }
+  .chat-msg { margin-bottom: 16px; max-width: 85%; }
+  .chat-msg.assistant { margin-right: auto; }
+  .chat-msg.user { margin-left: auto; }
+  .chat-msg .bubble { padding: 12px 16px; border-radius: 12px; font-size: 0.92rem; line-height: 1.5; white-space: pre-wrap; }
+  .chat-msg.assistant .bubble { background: var(--brand-bg); color: var(--text); border-bottom-left-radius: 4px; }
+  .chat-msg.user .bubble { background: var(--brand); color: #fff; border-bottom-right-radius: 4px; }
+  .chat-msg .sender { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chat-msg.user .sender { text-align: right; }
+  .chat-input-area { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+  .chat-input-area input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.92rem; font-family: inherit; }
+  .chat-input-area input:focus { outline: none; border-color: var(--brand); }
+  .chat-input-area button { background: var(--brand); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.92rem; }
+  .chat-input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .typing { color: var(--muted); font-style: italic; font-size: 0.85rem; padding: 8px 0; }
+
+  /* Preview */
+  .preview-bar { padding: 12px 20px; background: #e8f5e9; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .preview-bar button { padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem; border: none; }
+  .preview-bar .btn-preview { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+  .preview-bar .btn-deploy { background: var(--green); color: #fff; }
+  .preview-bar .btn-deploy:disabled { opacity: 0.5; cursor: not-allowed; }
+  .preview-bar span { flex: 1; font-size: 0.85rem; color: var(--green); font-weight: 600; }
+
+  .preview-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; justify-content: center; align-items: center; }
+  .preview-modal.open { display: flex; }
+  .preview-frame { background: #fff; width: 90%; max-width: 900px; height: 80vh; border-radius: 12px; overflow: hidden; position: relative; }
+  .preview-frame iframe { width: 100%; height: 100%; border: none; }
+  .preview-close { position: absolute; top: 8px; right: 12px; background: var(--brand); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; z-index: 1; }
+
+  footer { text-align: center; padding: 32px 24px; color: var(--muted); font-size: 0.8rem; }
+  footer a { color: var(--brand); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .step-header { padding: 16px; gap: 12px; }
+    .step-status { display: none; }
+    .readiness { margin: -20px 16px 16px; padding: 20px; }
+    .chat-panel { width: 100%; height: 100vh; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>The Village &mdash; Operations</h1>
+    <div class="sub">Business readiness dashboard. Build each tool to go live.</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="readiness">
+    <h2>Business Readiness</h2>
+    <div class="meter-bar"><div class="meter-fill" id="meterFill" style="width:0%"></div></div>
+    <div class="meter-label"><span id="meterText">Loading...</span><span id="meterStatus"></span></div>
+  </div>
+</div>
+
+<div class="container" id="stepsContainer" style="padding-top:8px;"></div>
+
+<!-- Chat overlay -->
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-panel">
+    <div class="chat-header">
+      <h3 id="chatTitle">Building tool...</h3>
+      <button class="chat-close" onclick="closeChat()">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div id="previewBar" style="display:none;" class="preview-bar">
+      <span>Tool ready to deploy</span>
+      <button class="btn-preview" onclick="showPreview()">Preview</button>
+      <button class="btn-deploy" id="deployBtn" onclick="deployTool()">Deploy</button>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Tell Roxy's agent what you need..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Preview modal -->
+<div class="preview-modal" id="previewModal">
+  <div class="preview-frame">
+    <button class="preview-close" onclick="closePreview()">&times;</button>
+    <iframe id="previewIframe"></iframe>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">&larr; The Village</a> &mdash; Operations Dashboard &mdash; Admin Only
+</footer>
+
+<script>
+const API_BASE = localStorage.getItem('pc-api-url') || 'https://tmp-phillips-lets-meant.trycloudflare.com';
+
+const STEPS = [
+  { id: 'step1', num: 1, title: 'Vet Providers', desc: 'Interviews, background checks, skills assessment', tools: [
+    { id: 'step1-application', name: 'Provider Application Form', desc: 'Online intake: contact info, experience, certifications, availability, languages, specialties', file: 'provider-application.html' },
+    { id: 'step1-background', name: 'Background Check Integration', desc: 'Submit and track background checks. Link to results. CDSS compliance.', file: 'background-check.html' },
+    { id: 'step1-skills', name: 'Skills Assessment Checklist', desc: 'Standardized evaluation: transfers, medication management, meal prep, hygiene, mobility, dementia care', file: 'skills-assessment.html' },
+    { id: 'step1-roster', name: 'Provider Roster', desc: 'Active provider directory: profiles, availability, match history, status, certifications', file: 'provider-roster.html' },
+    { id: 'step1-interview', name: 'Interview Script & Scoring', desc: 'Structured interview questions with scoring rubric. What to look for, red flags.', file: 'interview-script.html' },
+  ]},
+  { id: 'step2', num: 2, title: 'Build Relationships with Families', desc: 'Referrals from hospitals, senior centers, rehab, community', tools: [
+    { id: 'step2-intake', name: 'Family Intake Form', desc: 'Online form: loved one\'s needs, schedule, location, languages, personality, budget, urgency', file: 'family-intake.html' },
+    { id: 'step2-referrals', name: 'Referral Source Tracker', desc: 'Log referral sources: hospitals, senior centers, word of mouth. Track which channels produce matches.', file: 'referral-tracker.html' },
+    { id: 'step2-materials', name: 'Outreach Materials', desc: 'Flyers, business cards, one-pagers for discharge planners. Print-ready PDFs.', file: 'outreach-materials.html' },
+    { id: 'step2-crm', name: 'Family CRM', desc: 'Contact log: family name, needs, status (inquiry / matched / active / inactive), follow-up dates', file: 'family-crm.html' },
+    { id: 'step2-partner-kit', name: 'Referral Partner Kit', desc: 'Package for discharge planners and senior center staff: what Poly\'s Compass does, how to refer, contact info', file: 'partner-kit.html' },
+  ]},
+  { id: 'step3', num: 3, title: 'Make the Match', desc: 'Personality, language, physical needs, schedule, location', tools: [
+    { id: 'step3-worksheet', name: 'Matching Worksheet', desc: 'Side-by-side comparison: family needs vs. provider profile. Score compatibility on key dimensions.', file: 'matching-worksheet.html' },
+    { id: 'step3-calendar', name: 'Availability Calendar', desc: 'Visual calendar showing provider availability vs. family schedule needs. Spot conflicts instantly.', file: 'availability-calendar.html' },
+    { id: 'step3-history', name: 'Match History Log', desc: 'Track all matches: who was paired, when, outcome. Learn what works, what doesn\'t.', file: 'match-history.html' },
+    { id: 'step3-intro-script', name: 'Introduction Script', desc: 'Playbook for the first meeting: what to say, what to watch for, how to set expectations', file: 'intro-script.html' },
+  ]},
+  { id: 'step4', num: 4, title: 'Contract & Onboard', desc: 'Provider and family contract directly — clean, simple, transparent', tools: [
+    { id: 'step4-service-agreement', name: 'Service Agreement Template', desc: 'Poly\'s Compass ↔ Family agreement: placement fee, subscription terms, services included, cancellation policy', file: 'service-agreement.html' },
+    { id: 'step4-family-contract', name: 'Provider-Family Contract', desc: 'Direct employment agreement between family and provider: rate, schedule, duties, expectations', file: 'family-contract.html' },
+    { id: 'step4-registry-agreement', name: 'Provider Registry Agreement', desc: 'Poly\'s Compass ↔ Provider: subscription terms, code of conduct, background check consent', file: 'registry-agreement.html' },
+    { id: 'step4-onboarding', name: 'Onboarding Checklist', desc: 'Step-by-step: placement fee collected, agreements signed, first day scheduled, emergency contacts exchanged', file: 'onboarding-checklist.html' },
+    { id: 'step4-care-plan', name: 'Care Plan Template', desc: 'Document daily needs: medications, mobility, meals, routines, preferences, emergency protocol', file: 'care-plan.html' },
+  ]},
+  { id: 'step5', num: 5, title: 'Billing & Ongoing Management', desc: '5% service fee + monthly subscriptions + check-ins', tools: [
+    { id: 'step5-invoices', name: 'Invoice Generator', desc: 'Weekly billing via Stripe Connect: agreed provider hours + 5% platform fee, auto-collected from logged hours. Provider paid directly.', file: 'invoice-generator.html' },
+    { id: 'step5-subscriptions', name: 'Subscription Tracker', desc: 'Track monthly payments: family $99/mo, provider $49/mo. Due dates, payment status, grace periods.', file: 'subscription-tracker.html' },
+    { id: 'step5-hours', name: 'Hours Log', desc: 'Providers log hours, families confirm. Weekly summary feeds into invoicing.', file: 'hours-log.html' },
+    { id: 'step5-checkin', name: 'Monthly Check-in Script', desc: 'Structured check-in: questions to ask the family, what to document, when to escalate', file: 'checkin-script.html' },
+    { id: 'step5-revenue', name: 'Revenue Dashboard', desc: 'At-a-glance: active matches, monthly revenue, placement fees collected, subscription status, churn', file: 'revenue-dashboard.html' },
+  ]},
+];
+
+let toolStatus = {};
+let currentTool = null;
+let chatMessages = [];
+let generatedHtml = null;
+
+async function loadStatus() {
+  try {
+    const res = await fetch('tools/status.json?' + Date.now());
+    if (res.ok) toolStatus = await res.json();
+  } catch(e) { /* empty status */ }
+  render();
+}
+
+function render() {
+  const container = document.getElementById('stepsContainer');
+  let totalTools = 0, readyTools = 0;
+
+  container.innerHTML = STEPS.map(step => {
+    const stepReady = step.tools.filter(t => toolStatus[t.id]?.status === 'ready').length;
+    const stepTotal = step.tools.length;
+    totalTools += stepTotal;
+    readyTools += stepReady;
+
+    const stepClass = stepReady === stepTotal ? 'ready' : stepReady > 0 ? 'in-progress' : 'not-ready';
+    const statusClass = stepClass === 'ready' ? 'background:#e8f5e9;color:#2e7d32' : stepClass === 'in-progress' ? 'background:#fff8e1;color:#e65100' : 'background:#fce4ec;color:#c62828';
+    const numBg = stepClass === 'ready' ? '#2e7d32' : stepClass === 'in-progress' ? '#f9a825' : '#e0e0e0';
+    const numColor = stepClass === 'not-ready' ? '#555' : '#fff';
+
+    return `<div class="step-card" id="${step.id}">
+      <div class="step-header" onclick="toggle('${step.id}')">
+        <div class="step-num" style="background:${numBg};color:${numColor}">${step.num}</div>
+        <div class="step-title"><h3>${step.title}</h3><div class="desc">${step.desc}</div></div>
+        <span class="step-status" style="${statusClass}">${stepReady} / ${stepTotal} tools</span>
+        <span class="step-toggle">&#9662;</span>
+      </div>
+      <div class="step-body">
+        <ul class="tool-list">${step.tools.map(t => {
+          const ready = toolStatus[t.id]?.status === 'ready';
+          const filePath = toolStatus[t.id]?.file;
+          return `<li class="tool-item">
+            <div class="tool-icon ${ready ? 'ready' : 'absent'}">${ready ? '&#10003;' : '&#10007;'}</div>
+            <div class="tool-info">
+              <div class="tool-name">${ready ? `<a href="${filePath}" target="_blank">${t.name}</a>` : t.name}</div>
+              <div class="tool-desc">${t.desc}</div>
+            </div>
+            <div class="tool-action">${ready
+              ? `<span class="done-label">Live</span>`
+              : `<button onclick="openChat('${t.id}','${t.name.replace(/'/g,"\\'")}','${t.desc.replace(/'/g,"\\'")}','${t.file}')">Build</button>`
+            }</div>
+          </li>`;
+        }).join('')}</ul>
+      </div>
+    </div>`;
+  }).join('');
+
+  const pct = totalTools > 0 ? Math.round((readyTools / totalTools) * 100) : 0;
+  const stepsComplete = STEPS.filter(s => s.tools.every(t => toolStatus[t.id]?.status === 'ready')).length;
+  const fill = document.getElementById('meterFill');
+  fill.style.width = pct + '%';
+  fill.style.background = pct === 100 ? '#2e7d32' : pct > 0 ? '#f9a825' : '#c62828';
+  document.getElementById('meterText').textContent = `${stepsComplete} of 5 steps operational (${readyTools}/${totalTools} tools)`;
+  document.getElementById('meterStatus').textContent = pct === 100 ? 'Ready to launch' : pct > 0 ? 'In progress' : 'Not ready';
+}
+
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function openChat(toolId, toolName, toolDesc, filename) {
+  currentTool = { id: toolId, name: toolName, desc: toolDesc, filename };
+  chatMessages = [];
+  generatedHtml = null;
+  document.getElementById('chatTitle').textContent = 'Building: ' + toolName;
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('previewBar').style.display = 'none';
+  document.getElementById('chatInput').value = '';
+  document.getElementById('chatOverlay').classList.add('open');
+  document.getElementById('chatInput').focus();
+
+  sendToAgent([{ role: 'user', content: `I want to build the "${toolName}" tool. ${toolDesc}` }], true);
+}
+
+function closeChat() {
+  document.getElementById('chatOverlay').classList.remove('open');
+  currentTool = null;
+}
+
+function addMessage(role, text) {
+  const el = document.getElementById('chatMessages');
+  const cleanText = text.replace(/---HTML_START---[\s\S]*?---HTML_END---/g, '[HTML tool generated]');
+  el.innerHTML += `<div class="chat-msg ${role}">
+    <div class="sender">${role === 'assistant' ? 'Poly\'s Compass Agent' : 'You'}</div>
+    <div class="bubble">${escapeHtml(cleanText)}</div>
+  </div>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  chatMessages.push({ role: 'user', content: text });
+  addMessage('user', text);
+  await sendToAgent(chatMessages, false);
+}
+
+async function sendToAgent(messages, isFirst) {
+  const sendBtn = document.getElementById('sendBtn');
+  const chatInput = document.getElementById('chatInput');
+  sendBtn.disabled = true;
+  chatInput.disabled = true;
+
+  const el = document.getElementById('chatMessages');
+  el.innerHTML += '<div class="typing" id="typingIndicator">Agent is thinking...</div>';
+  el.scrollTop = el.scrollHeight;
+
+  try {
+    const res = await fetch(API_BASE + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        toolId: currentTool.id,
+        toolName: currentTool.name,
+        toolDesc: currentTool.desc,
+        messages: messages
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+
+    chatMessages.push({ role: 'assistant', content: data.response });
+    addMessage('assistant', data.response);
+
+    if (data.html) {
+      generatedHtml = data.html;
+      document.getElementById('previewBar').style.display = 'flex';
+    }
+  } catch(err) {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+    addMessage('assistant', 'Error connecting to agent: ' + err.message);
+  }
+
+  sendBtn.disabled = false;
+  chatInput.disabled = false;
+  chatInput.focus();
+}
+
+function showPreview() {
+  if (!generatedHtml) return;
+  const iframe = document.getElementById('previewIframe');
+  iframe.srcdoc = generatedHtml;
+  document.getElementById('previewModal').classList.add('open');
+}
+
+function closePreview() {
+  document.getElementById('previewModal').classList.remove('open');
+}
+
+async function deployTool() {
+  if (!generatedHtml || !currentTool) return;
+  const btn = document.getElementById('deployBtn');
+  btn.disabled = true;
+  btn.textContent = 'Deploying...';
+
+  try {
+    const res = await fetch(API_BASE + '/api/deploy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        toolId: currentTool.id,
+        html: generatedHtml,
+        filename: currentTool.filename
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    toolStatus[currentTool.id] = { status: 'ready', file: data.url };
+    addMessage('assistant', 'Deployed! The tool is now live. Closing this panel...');
+    setTimeout(() => { closeChat(); render(); }, 1500);
+  } catch(err) {
+    addMessage('assistant', 'Deploy failed: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Deploy';
+  }
+}
+
+loadStatus();
+</script>
+</body>
+</html>

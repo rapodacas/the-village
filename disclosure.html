@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Village — Registry & Independent Contractor Disclosure</title>
+<style>
+  :root { --brand: #2f7d7a; --brand-light: #3f9c98; --brand-bg: #eef6f5; --accent: #ef8354; --text: #1a1a1a; --muted: #555; --bg: #fff; --border: #e0e0e0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.7; }
+  .topbar { background: #23514f; color: #fff; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  .topbar a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+  .topbar a:hover { color: #fff; }
+  .topbar .brand { font-weight: 700; }
+  .hero { text-align: center; padding: 48px 24px 24px; background: var(--brand-bg); }
+  .hero h1 { font-size: 1.9rem; color: var(--brand); letter-spacing: -0.5px; }
+  .hero .tagline { color: var(--muted); margin-top: 6px; }
+  .container { max-width: 780px; margin: 0 auto; padding: 32px 24px 56px; }
+  .container p { margin-bottom: 16px; }
+  .lead { font-size: 1.05rem; }
+  ol.terms { list-style: none; counter-reset: t; margin: 24px 0; }
+  ol.terms li { counter-increment: t; position: relative; padding: 16px 16px 16px 56px; margin-bottom: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+  ol.terms li::before { content: counter(t); position: absolute; left: 16px; top: 16px; width: 28px; height: 28px; background: var(--brand); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+  ol.terms li strong { color: var(--brand); }
+  .note { background: var(--brand-bg); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 0 8px 8px 0; color: var(--muted); font-size: 0.92rem; margin-top: 24px; }
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+  @media (max-width: 600px) { .hero h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand">The Village</span>
+  <a href="index.html">&larr; Home</a>
+  <a href="join.html">Join</a>
+</div>
+
+<div class="hero">
+  <h1>Registry &amp; Independent Contractor Disclosure</h1>
+  <div class="tagline">How The Village works &mdash; in plain language</div>
+</div>
+
+<div class="container">
+  <p class="lead">The Village is a provider <strong>referral registry</strong> serving families in San Diego County. We connect families with independent, vetted providers. We are <strong>not a home care agency, not a staffing agency, and not an employer.</strong></p>
+
+  <p>By using The Village, you understand and agree that:</p>
+
+  <ol class="terms">
+    <li><strong>Providers are independent contractors.</strong> They are not employees of The Village. We do not hire, employ, supervise, direct, schedule, or control how a provider performs their work.</li>
+    <li><strong>You set the rate.</strong> The family and provider negotiate and agree on the pay rate directly. The Village may suggest a fair market range, but does not set, require, or control wages.</li>
+    <li><strong>We don't pay wages.</strong> Payments are processed through Stripe Connect, which pays the provider their full agreed rate directly. The Village collects only its service fee and membership fees &mdash; never the provider's wages.</li>
+    <li><strong>Taxes are the provider's responsibility.</strong> Each provider is an independent contractor responsible for their own taxes and will receive the appropriate tax form (for example, a 1099-K from the payment processor). The Village does not withhold taxes, pay payroll or employment taxes, or provide workers' compensation or unemployment insurance for providers. Depending on the arrangement, a family may have household-employer tax obligations of its own and should consult a tax professional.</li>
+    <li><strong>Vetting, not a guarantee.</strong> We screen providers (interviews, background checks, credential review) and share what we find, but the family makes its own hiring decision. The Village does not guarantee, and is not responsible for, the acts, omissions, or performance of any provider.</li>
+    <li><strong>Your choice, either way.</strong> The family may accept or decline any referral, and the family or provider may end the arrangement at any time under their own agreement.</li>
+    <li><strong>Our optional services.</strong> Membership conveniences &mdash; backup coverage, check-ins, replacement matching, credential tracking, and mediation &mdash; are support services. They do not make The Village the provider's employer or the party responsible for the care delivered.</li>
+    <li><strong>Scope of practice.</strong> Advocates are not attorneys and do not provide legal advice or representation; coaches, tutors, and facilitators do not provide medical, psychological, or therapeutic treatment and do not diagnose. The Village does not provide special-education, legal, medical, or therapeutic services itself.</li>
+  </ol>
+
+  <div class="note">This disclosure is provided for transparency. The Village is a registry connecting independent providers with families; it is not the employer of any provider and does not provide the care itself.</div>
+</div>
+
+<footer>&copy; 2026 The Village &mdash; San Diego County Special-Needs Support Registry</footer>
+</body>
+</html>
