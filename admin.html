@@ -164,7 +164,7 @@ const STEPS = [
     { id: 'step2-referrals', name: 'Referral Source Tracker', desc: 'Log referral sources: hospitals, senior centers, word of mouth. Track which channels produce matches.', file: 'referral-tracker.html' },
     { id: 'step2-materials', name: 'Outreach Materials', desc: 'Flyers, business cards, one-pagers for discharge planners. Print-ready PDFs.', file: 'outreach-materials.html' },
     { id: 'step2-crm', name: 'Family CRM', desc: 'Contact log: family name, needs, status (inquiry / matched / active / inactive), follow-up dates', file: 'family-crm.html' },
-    { id: 'step2-partner-kit', name: 'Referral Partner Kit', desc: 'Package for discharge planners and senior center staff: what Poly\'s Compass does, how to refer, contact info', file: 'partner-kit.html' },
+    { id: 'step2-partner-kit', name: 'Referral Partner Kit', desc: 'Package for referral partners (pediatricians, SELPAs, parent groups): what The Village does, how to refer, contact info', file: 'partner-kit.html' },
   ]},
   { id: 'step3', num: 3, title: 'Make the Match', desc: 'Personality, language, physical needs, schedule, location', tools: [
     { id: 'step3-worksheet', name: 'Matching Worksheet', desc: 'Side-by-side comparison: family needs vs. provider profile. Score compatibility on key dimensions.', file: 'matching-worksheet.html' },
@@ -173,9 +173,9 @@ const STEPS = [
     { id: 'step3-intro-script', name: 'Introduction Script', desc: 'Playbook for the first meeting: what to say, what to watch for, how to set expectations', file: 'intro-script.html' },
   ]},
   { id: 'step4', num: 4, title: 'Contract & Onboard', desc: 'Provider and family contract directly — clean, simple, transparent', tools: [
-    { id: 'step4-service-agreement', name: 'Service Agreement Template', desc: 'Poly\'s Compass ↔ Family agreement: placement fee, subscription terms, services included, cancellation policy', file: 'service-agreement.html' },
+    { id: 'step4-service-agreement', name: 'Service Agreement Template', desc: 'The Village ↔ Family agreement: matching fee, membership terms, services included, cancellation policy', file: 'service-agreement.html' },
     { id: 'step4-family-contract', name: 'Provider-Family Contract', desc: 'Direct employment agreement between family and provider: rate, schedule, duties, expectations', file: 'family-contract.html' },
-    { id: 'step4-registry-agreement', name: 'Provider Registry Agreement', desc: 'Poly\'s Compass ↔ Provider: subscription terms, code of conduct, background check consent', file: 'registry-agreement.html' },
+    { id: 'step4-registry-agreement', name: 'Provider Registry Agreement', desc: 'The Village ↔ Provider: membership terms, scope-of-practice terms, background-check + TrustLine consent', file: 'registry-agreement.html' },
     { id: 'step4-onboarding', name: 'Onboarding Checklist', desc: 'Step-by-step: placement fee collected, agreements signed, first day scheduled, emergency contacts exchanged', file: 'onboarding-checklist.html' },
     { id: 'step4-care-plan', name: 'Care Plan Template', desc: 'Document daily needs: medications, mobility, meals, routines, preferences, emergency protocol', file: 'care-plan.html' },
   ]},
@@ -279,7 +279,7 @@ function addMessage(role, text) {
   const el = document.getElementById('chatMessages');
   const cleanText = text.replace(/---HTML_START---[\s\S]*?---HTML_END---/g, '[HTML tool generated]');
   el.innerHTML += `<div class="chat-msg ${role}">
-    <div class="sender">${role === 'assistant' ? 'Poly\'s Compass Agent' : 'You'}</div>
+    <div class="sender">${role === 'assistant' ? 'The Village Agent' : 'You'}</div>
     <div class="bubble">${escapeHtml(cleanText)}</div>
   </div>`;
   el.scrollTop = el.scrollHeight;
