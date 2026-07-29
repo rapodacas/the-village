@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Village — Hybrid Model</title>
 <style>
-  :root { --brand: #2f7d7a; --brand-light: #3f9c98; --brand-bg: #eef6f5; --accent: #ef8354; --gold: #b8860b; --text: #1a1a1a; --muted: #555; --bg: #fff; --card: #f8f9fa; --border: #e0e0e0; }
+  :root { --brand: #2f7d7a; --brand-light: #3f9c98; --brand-bg: #eef6f5; --accent: #ef8354; --gold: #b8860b; --text: #1a1a1a; --muted: #555; --bg: #fff; --card: #f8f9fa; --border: #e2e6e6; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.7; }
   .hero { background: linear-gradient(135deg, #23514f, var(--brand), var(--brand-light)); color: #fff; text-align: center; padding: 60px 24px 40px; }
@@ -22,54 +22,31 @@
   th { background: var(--brand); color: #fff; font-weight: 600; }
   tr:nth-child(even) { background: var(--card); }
   .highlight { color: var(--brand); font-weight: 700; }
-
-  /* Three pillars */
+  .winner { background: #e6f4f1 !important; }
   .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
-  .pillar { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; position: relative; }
-  .pillar.center { border-color: var(--brand); box-shadow: 0 4px 16px rgba(45,106,79,0.12); }
+  .pillar { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+  .pillar.center { border-color: var(--brand); box-shadow: 0 4px 16px rgba(47,125,122,0.14); }
   .pillar .step { display: inline-block; background: var(--brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; line-height: 28px; font-weight: 700; font-size: 0.85rem; margin-bottom: 10px; }
   .pillar h3 { color: var(--brand); font-size: 1rem; margin-bottom: 6px; }
   .pillar .amount { font-size: 1.8rem; font-weight: 700; color: var(--text); margin: 8px 0; }
   .pillar .amount span { font-size: 0.9rem; font-weight: 400; color: var(--muted); }
   .pillar .when { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
   .pillar .desc { font-size: 0.9rem; color: var(--muted); text-align: left; }
-
-  /* Timeline */
   .timeline { position: relative; margin: 24px 0 24px 20px; padding-left: 24px; border-left: 3px solid var(--brand); }
   .timeline-item { position: relative; margin-bottom: 24px; }
   .timeline-item::before { content: ""; position: absolute; left: -31px; top: 4px; width: 14px; height: 14px; background: var(--brand); border-radius: 50%; border: 3px solid var(--bg); }
   .timeline-item h3 { font-size: 1rem; color: var(--brand); margin-bottom: 4px; }
   .timeline-item p { margin: 0; font-size: 0.95rem; color: var(--muted); }
   .timeline-item .money { font-weight: 700; color: var(--text); }
-
-  /* Revenue cards */
   .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
   .card { background: var(--bg); border-left: 4px solid var(--brand); padding: 20px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
   .card .label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
   .card .value { font-size: 1.5rem; font-weight: 700; color: var(--brand); }
   .card .detail { font-size: 0.85rem; color: var(--muted); }
-
-  /* Fix table */
-  .fix-table td:first-child { font-weight: 600; color: var(--muted); width: 30%; }
-  .fix-table td:nth-child(2) { color: #c62828; }
-  .fix-table td:nth-child(3) { color: var(--brand); font-weight: 600; }
-
-  /* Callout */
-  .callout { background: var(--brand-bg); border-left: 4px solid var(--accent); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-style: italic; color: var(--muted); }
-
-  /* Comparison */
-  .compare-header th { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  .compare-header th:nth-child(2) { background: #546e7a; }
-  .compare-header th:nth-child(3) { background: #546e7a; }
-  .compare-header th:nth-child(4) { background: var(--accent); color: #fff; }
-  .winner { background: #e8f5e9 !important; }
-
+  .callout { background: var(--brand-bg); border-left: 4px solid var(--accent); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; color: var(--muted); }
   .nav-links { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
   .nav-back { display: inline-block; padding: 10px 24px; background: var(--brand); color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; }
-  .nav-back:hover { background: var(--brand-light); }
   .nav-alt { display: inline-block; padding: 10px 24px; background: var(--card); color: var(--brand); text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid var(--border); }
-  .nav-alt:hover { background: var(--border); }
-
   footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.85rem; }
   @media (max-width: 700px) { .pillars { grid-template-columns: 1fr; } .hero h1 { font-size: 1.7rem; } }
 </style>
@@ -78,224 +55,104 @@
 
 <div class="hero">
   <h1>Model C: Hybrid</h1>
-  <div class="tagline">Placement fee + subscription + percentage &mdash; three layers, zero gaps</div>
+  <div class="tagline">Matching fee + memberships + a small service fee &mdash; three layers</div>
   <div class="badge">Recommended</div>
 </div>
 
-<!-- Three Pillars -->
 <section>
 <div class="container">
   <h2>Three Revenue Layers</h2>
-  <p>Each layer covers the other's weakness. Together, they create guaranteed income with upside.</p>
+  <p>Because special-needs help is often lumpy (an advocate around IEP season, a tutor a few hours a week), the <strong>memberships carry the revenue</strong> and the service fee is a light topper &mdash; not the reverse.</p>
   <div class="pillars">
     <div class="pillar">
       <div class="step">1</div>
-      <h3>Placement Fee</h3>
+      <h3>Matching Fee</h3>
       <div class="amount">$299<span> one-time</span></div>
-      <div class="when">Day 1 &mdash; before provider starts</div>
-      <div class="desc">Roxy earns immediately. Family is invested from the start. Covers vetting and matching time.</div>
+      <div class="when">Day 1 &mdash; before the match starts</div>
+      <div class="desc">Roxy earns immediately for the vetting and matching work. The family is invested from the start.</div>
     </div>
     <div class="pillar center">
       <div class="step">2</div>
-      <h3>Monthly Subscription</h3>
+      <h3>Family Membership</h3>
       <div class="amount">$99<span>/mo</span></div>
       <div class="when">Family pays starting Month 2</div>
-      <div class="desc">Guaranteed floor. Covers backup provider, monthly check-ins, replacement guarantee, conflict mediation.</div>
+      <div class="desc">The revenue floor. Covers ongoing matching support, replacement guarantee, and check-ins.</div>
     </div>
     <div class="pillar">
       <div class="step">3</div>
       <h3>Service Fee</h3>
-      <div class="amount">5%<span> of hours</span></div>
+      <div class="amount">5%<span> of billings</span></div>
       <div class="when">Collected automatically via Stripe Connect</div>
-      <div class="desc">The family funds each payment on the platform; the provider receives their full agreed rate directly, and The Village's 5% is taken automatically as a platform fee. We never hold or pay out wages.</div>
+      <div class="desc">A light share of the provider's paid work. The provider is paid their full rate directly; our 5% is taken as a platform fee.</div>
     </div>
   </div>
-
-  <p><strong>Provider subscription:</strong> $49/mo &mdash; waived for the first 90 days so they see the value before they pay.</p>
-  <div class="callout" style="font-style:normal;"><strong>How the money moves:</strong> The Village doesn't set rates or pay wages. The family and provider agree the rate (we suggest a fair market range), and payments run through <strong>Stripe Connect</strong> &mdash; the provider is paid their full agreed rate directly, and our service fee is collected automatically as a platform fee. Providers are independent contractors; The Village is a registry, not an employer.</div>
+  <p><strong>Provider membership:</strong> $49/mo &mdash; waived for the first 90 days so they see the referrals before they pay.</p>
+  <div class="callout"><strong>How the money moves:</strong> The Village doesn't set rates or pay wages. The family and provider agree the rate (we suggest a range), and payments run through <strong>Stripe Connect</strong> &mdash; the provider is paid their full agreed rate directly, and our fee is collected automatically as a platform fee. Providers are independent contractors; The Village is a registry, not an employer.</div>
 </div>
 </section>
 
-<!-- Timeline -->
 <section>
 <div class="container">
   <h2>How a Match Plays Out</h2>
+  <p style="font-size:0.9rem;color:var(--muted);">Illustrative: an active match bills about <strong>$500/month</strong> of provider services (e.g., a tutor at ~$60/hr a couple times a week). Advocacy is lumpier; steady tutoring/coaching is higher &mdash; the memberships smooth it out.</p>
   <div class="timeline">
     <div class="timeline-item">
-      <h3>Day 1: Placement</h3>
-      <p>Family pays <span class="money">$299</span> placement fee. Roxy introduces the matched provider. Care begins.</p>
+      <h3>Day 1: Match</h3>
+      <p>Family pays the <span class="money">$299</span> matching fee. Roxy introduces the vetted provider. Support begins.</p>
     </div>
     <div class="timeline-item">
       <h3>Month 1: Service Fee Only</h3>
-      <p>Payments run through Stripe Connect. The family and provider agree a rate (typically ~$30/hr). At 160 hours/month, The Village's 5% &asymp; <span class="money">$240/month</span>, collected automatically &mdash; the provider receives their full rate directly.<br>
-      Provider subscription: waived (90-day grace period)</p>
+      <p>Payments run through Stripe Connect. On ~$500/mo of billed services, the 5% fee &asymp; <span class="money">$25/mo</span>, collected automatically &mdash; the provider gets their full rate directly. Provider membership: waived (90-day grace).</p>
     </div>
     <div class="timeline-item">
-      <h3>Month 2+: Full Hybrid</h3>
-      <p>Family subscription kicks in: <span class="money">$99/mo</span><br>
-      Service fee continues: <span class="money">$240/mo</span><br>
-      Total from this one match: <span class="money">$339/month</span></p>
+      <h3>Month 2+: Family Membership</h3>
+      <p>Family membership begins: <span class="money">$99/mo</span> + ~$25 service fee = <span class="money">~$124/month</span> from this one match.</p>
     </div>
     <div class="timeline-item">
       <h3>Month 4+: Provider Pays Too</h3>
-      <p>After 90 days, provider subscription begins: <span class="money">$49/mo</span><br>
-      Total from this one match: <span class="money">$388/month</span> <span style="font-size:0.85rem;color:var(--muted);">(before payment processing &mdash; see below)</span></p>
+      <p>After 90 days, provider membership begins: <span class="money">$49/mo</span>.<br>Total from this one match: <span class="money">~$173/month</span> (plus the one-time $299).</p>
     </div>
   </div>
 </div>
 </section>
 
-<!-- Payment Processing -->
-<section>
-<div class="container">
-  <h2>Payment Processing (Stripe Connect)</h2>
-  <p>Payments run through Stripe Connect &mdash; the provider is paid their full agreed rate directly, and our 5% is collected automatically as a platform fee. Processing fees are real, and the payment rail you choose changes the margin dramatically:</p>
-  <table>
-    <tr><th>Rail</th><th>Fee covered by</th><th>Family pays</th><th>Stripe takes</th><th>The Village nets*</th></tr>
-    <tr><td>Card</td><td>Platform absorbs</td><td>$31.50/hr</td><td>~$147/mo</td><td style="color:#c62828; font-weight:700;">$79/mo</td></tr>
-    <tr><td>Card</td><td>Family covers</td><td>$32.42/hr</td><td>~$152/mo</td><td class="highlight">$226/mo</td></tr>
-    <tr class="winner"><td><strong>ACH (bank)</strong></td><td>Family covers</td><td><strong>$31.63/hr</strong></td><td><strong>~$20/mo</strong></td><td class="highlight"><strong>$226/mo</strong></td></tr>
-  </table>
-  <p><strong>Takeaway:</strong> on <strong>cards</strong>, the 2.9% + 30&cent; fee eats most of the 5% service fee &mdash; absorbing it leaves only ~$79 per match. On <strong>ACH bank debit</strong> (0.8%, capped at $5 per charge) the fee is trivial. <strong>Use ACH</strong> and pass the small processing cost to the family: they pay ~$31.63/hr instead of $31.50, and The Village keeps essentially the full service fee.</p>
-  <p style="font-size:0.85rem; color:var(--muted);">*Net of Stripe processing and estimated Connect account fees, per match at $30/hr &times; 160 hrs/mo, billed weekly. These numbers are computed live in the app at <code>/api/economics</code>.</p>
-</div>
-</section>
-
-<!-- Revenue at Scale -->
 <section>
 <div class="container">
   <h2>Revenue at Scale</h2>
   <div class="card-grid">
-    <div class="card">
-      <div class="label">1 Match</div>
-      <div class="value">$388/mo</div>
-      <div class="detail">$99 + $49 + $240</div>
-    </div>
-    <div class="card">
-      <div class="label">5 Matches</div>
-      <div class="value">$1,940/mo</div>
-      <div class="detail">+ $1,495 in placement fees</div>
-    </div>
-    <div class="card">
-      <div class="label">10 Matches</div>
-      <div class="value">$3,880/mo</div>
-      <div class="detail">+ $2,990 in placement fees</div>
-    </div>
-    <div class="card">
-      <div class="label">20 Matches</div>
-      <div class="value">$7,760/mo</div>
-      <div class="detail">+ $5,980 in placement fees</div>
-    </div>
+    <div class="card"><div class="label">1 Match</div><div class="value">~$173/mo</div><div class="detail">$99 + $49 + ~$25</div></div>
+    <div class="card"><div class="label">10 Matches</div><div class="value">~$1,730/mo</div><div class="detail">+ $299 per new match</div></div>
+    <div class="card"><div class="label">20 Matches</div><div class="value">~$3,460/mo</div><div class="detail">+ $5,980 in matching fees</div></div>
+    <div class="card"><div class="label">30 Matches</div><div class="value">~$5,190/mo</div><div class="detail">recurring, mostly memberships</div></div>
   </div>
-  <p>Placement fees are one-time cash injections on top of the recurring monthly revenue.</p>
+  <p>The memberships are the predictable base; matching fees are one-time cash injections on top. Conservatively building to 20&ndash;30 active matches over the first year lands this in the <strong>$40K&ndash;$70K/year</strong> range &mdash; a real business running <em>alongside</em> Roxy's teaching, not instead of it.</p>
+</div>
+</section>
 
-  <h2 style="margin-top:32px;">Year 1 Projection</h2>
+<section>
+<div class="container">
+  <h2>Payment Processing (Stripe Connect)</h2>
+  <p>Payments run through Stripe Connect &mdash; the provider is paid directly, our 5% is auto-collected. At these smaller ticket sizes, the payment rail matters even more:</p>
   <table>
-    <tr><th>Quarter</th><th>New Matches</th><th>Active Total</th><th>Placement Fees</th><th>Monthly Revenue</th><th>Quarter Total</th></tr>
-    <tr><td>Q1 (months 1-3)</td><td>5</td><td>5</td><td>$1,495</td><td>~$1,500 avg</td><td class="highlight">$6,100</td></tr>
-    <tr><td>Q2 (months 4-6)</td><td>5</td><td>10</td><td>$1,495</td><td>~$3,500 avg</td><td class="highlight">$11,900</td></tr>
-    <tr><td>Q3 (months 7-9)</td><td>5</td><td>15</td><td>$1,495</td><td>~$5,400 avg</td><td class="highlight">$17,700</td></tr>
-    <tr><td>Q4 (months 10-12)</td><td>5</td><td>20</td><td>$1,495</td><td>~$7,300 avg</td><td class="highlight">$23,500</td></tr>
-    <tr style="background:var(--brand-bg); font-weight:700;"><td>Year 1 Total</td><td>20</td><td>20</td><td>$5,980</td><td></td><td style="color:var(--brand); font-size:1.1rem;">$59,200</td></tr>
+    <tr><th>Rail</th><th>On ~$500/mo billed</th><th>Stripe takes</th><th>The Village nets*</th></tr>
+    <tr><td>Card</td><td>Platform absorbs</td><td>~$14.80/mo</td><td style="color:#c62828; font-weight:700;">~$10/mo</td></tr>
+    <tr class="winner"><td><strong>ACH (bank)</strong></td><td>Family covers</td><td><strong>~$4/mo</strong></td><td class="highlight"><strong>~$25/mo</strong></td></tr>
   </table>
-  <p>Conservative: 5 new matches per quarter, no churn. Real numbers will vary &mdash; but even at half this pace, it's a real business.</p>
+  <p><strong>Takeaway:</strong> a $500 card charge costs 2.9% + 30&cent; &asymp; $14.80 &mdash; which would eat most of the $25 service fee. <strong>ACH bank debit</strong> (0.8%, capped at $5) barely dents it. Use <strong>ACH</strong> and pass the tiny fee to the family. (Modeled live in the app at <code>/api/economics</code>.)</p>
 </div>
 </section>
 
-<!-- How Hybrid Fixes Everything -->
 <section>
 <div class="container">
-  <h2>How Hybrid Eliminates the Cons</h2>
-  <table class="fix-table">
-    <tr><th>Problem</th><th>Standalone Model</th><th>How Hybrid Fixes It</th></tr>
-    <tr><td>Revenue fluctuates with hours</td><td>Percentage only</td><td>Subscription floor guarantees minimum income even in slow weeks</td></tr>
-    <tr><td>Lower revenue at high hours</td><td>Subscription only</td><td>10% service fee captures the upside when providers work more</td></tr>
-    <tr><td>Retaining families</td><td>Percentage only</td><td>Real ongoing value &mdash; backup, check-ins, replacement guarantee &mdash; makes staying the easy choice</td></tr>
-    <tr><td>Providers resist paying</td><td>Subscription only</td><td>90-day grace period &mdash; they see the value before they pay</td></tr>
-    <tr><td>Hard initial sell</td><td>Subscription only</td><td>Placement fee gets buy-in on day 1; subscription starts month 2</td></tr>
-    <tr><td>Bookkeeping on hourly payments</td><td>Percentage only</td><td>Lower percentage (5% vs 15%) &mdash; subscription carries the base</td></tr>
-    <tr><td>Must deliver ongoing value</td><td>Subscription only</td><td>The service genuinely delivers &mdash; backup coverage, check-ins, replacements &mdash; so it's worth keeping</td></tr>
-  </table>
-</div>
-</section>
-
-<!-- What the Family Sees -->
-<section>
-<div class="container">
-  <h2>What the Family Sees</h2>
-  <div class="callout">"For $99 a month, you get a vetted provider, a backup if they call out, monthly check-ins, and a replacement guarantee. If your provider isn't working out, we find you a new one at no extra cost. Try getting that from Craigslist."</div>
+  <h2>Why the Hybrid Works Here</h2>
   <table>
-    <tr><th>What They Get</th><th>What It Solves</th></tr>
-    <tr><td>Vetted, background-checked provider</td><td>Trust &mdash; they're not hiring a stranger off the internet</td></tr>
-    <tr><td>Backup provider coverage</td><td>Primary calls out? Roxy sends a replacement same day</td></tr>
-    <tr><td>Monthly wellness check-in</td><td>Someone is actively monitoring the care quality</td></tr>
-    <tr><td>Replacement guarantee</td><td>Match not working? New provider, no new placement fee</td></tr>
-    <tr><td>Conflict mediation</td><td>Problems get resolved by someone who's been on both sides</td></tr>
-    <tr><td>Credential tracking</td><td>CPR, certifications, background checks &mdash; always current</td></tr>
+    <tr><th>Risk</th><th>How the hybrid handles it</th></tr>
+    <tr><td>Billings are lumpy/seasonal</td><td>The $99 membership floor keeps revenue steady even in quiet months</td></tr>
+    <tr><td>A match ends quickly</td><td>The $299 matching fee means Roxy earns for the work regardless</td></tr>
+    <tr><td>Providers resist a fee</td><td>90-day grace period &mdash; they get referrals first, pay later</td></tr>
+    <tr><td>Families question ongoing cost</td><td>Real value &mdash; vetting, replacement guarantee, check-ins &mdash; earns the membership</td></tr>
   </table>
-  <p>The subscription isn't a fee for an introduction. It's a fee for <strong>ongoing peace of mind</strong>.</p>
-</div>
-</section>
-
-<!-- What the Provider Sees -->
-<section>
-<div class="container">
-  <h2>What the Provider Sees</h2>
-  <div class="callout">"You pay $49 a month. In return, you never have to look for a client again. We send them to you. And you earn $24-27/hr &mdash; not the $18-22 an agency pays."</div>
-  <table>
-    <tr><th>What They Get</th><th>Agency Comparison</th></tr>
-    <tr><td>$30/hr average take-home</td><td>vs. $18-22/hr at an agency</td></tr>
-    <tr><td>Steady client pipeline</td><td>vs. hoping the agency has shifts</td></tr>
-    <tr><td>$49/mo fee (waived first 90 days)</td><td>vs. 40-50% of every dollar, every hour, forever</td></tr>
-    <tr><td>Support with difficult situations</td><td>vs. agency says "figure it out"</td></tr>
-    <tr><td>Background check on file</td><td>vs. paying for a new one at every agency</td></tr>
-  </table>
-  <p>At 160 hours/month, an agency takes <strong>$2,560</strong> from a provider's potential earnings. The Village takes <strong>$49</strong>. The math sells itself.</p>
-</div>
-</section>
-
-<!-- Model Comparison -->
-<section>
-<div class="container">
-  <h2>All Three Models Compared</h2>
-  <table>
-    <tr class="compare-header"><th></th><th>Percentage</th><th>Subscription</th><th>Hybrid</th></tr>
-    <tr><td>Revenue per match (monthly)</td><td>$640</td><td>$178</td><td class="highlight">$388</td></tr>
-    <tr><td>Revenue predictability</td><td>Variable</td><td>Fixed</td><td class="highlight winner">Fixed floor + variable upside</td></tr>
-    <tr><td>Day 1 cash</td><td>$0</td><td>$0</td><td class="highlight winner">$299 placement fee</td></tr>
-    <tr><td>Why families stay</td><td>Rate savings</td><td>Ongoing service value</td><td class="highlight winner">Placement + ongoing service value</td></tr>
-    <tr><td>Provider buy-in</td><td>Easy (no cost to them)</td><td>Harder ($79/mo)</td><td class="highlight winner">Easy (free for 90 days, then $49)</td></tr>
-    <tr><td>Bookkeeping</td><td>Heavy</td><td>Light</td><td class="highlight">Moderate</td></tr>
-    <tr><td>10 matches (monthly)</td><td>$6,400</td><td>$1,780</td><td class="highlight">$3,880</td></tr>
-    <tr><td>20 matches (monthly)</td><td>$12,800</td><td>$3,560</td><td class="highlight">$7,760</td></tr>
-    <tr><td>Year 1 (20 matches built over 12 mo)</td><td>~$76,800</td><td>~$25,000</td><td class="highlight winner">~$59,200</td></tr>
-  </table>
-</div>
-</section>
-
-<!-- Manage + Provide -->
-<section>
-<div class="container">
-  <h2>The Full Picture: Manage + Provide</h2>
-  <p>Managing 20 matches takes about <strong>20 hours per week</strong> &mdash; check-ins, billing, issue resolution. Most weeks, most matches need zero attention. The rest of the week? Roxy provides care directly at <strong>$31.50/hr</strong>, keeping every dollar.</p>
-  <table>
-    <tr><th>Income Source</th><th>Hours/Week</th><th>Annual</th></tr>
-    <tr><td>The Village management (20 matches)</td><td>20</td><td class="highlight">$92,800</td></tr>
-    <tr><td>Direct caregiving at $31.50/hr</td><td>20</td><td>$32,760</td></tr>
-    <tr style="background:var(--brand-bg); font-weight:700;"><td>Combined (standard work week)</td><td>40</td><td style="color:var(--brand); font-size:1.1rem;">$125,560</td></tr>
-  </table>
-  <p>At 25 hours of caregiving (45-hour week): <strong>$133,750/year</strong>. At 30 hours: <strong>$141,940/year</strong>.</p>
-  <p>As management systems get dialed in, the 20 hours shrinks &mdash; freeing more time for direct care or simply working less.</p>
-</div>
-</section>
-
-<!-- Bottom Line -->
-<section>
-<div class="container">
-  <h2>The Bottom Line</h2>
-  <p>The 5% service fee keeps families at <strong>10% below agency rates</strong> and providers at <strong>$30/hr</strong> &mdash; the highest take-home in the market. The subscriptions carry the revenue floor. The placement fee locks in commitment from day one.</p>
-  <p>Roxy's $67K burndown at 15 matches + 25 hrs/wk caregiving: <strong>done in 7 months</strong>.</p>
-  <p style="font-size:1.1rem; font-weight:700; color:var(--brand); margin-top:20px;">This isn't a side hustle. This is a $125K+ business.</p>
+  <p style="font-size:0.85rem;color:var(--muted);">All figures illustrative and pre-legal-review. The 5% service fee's lawfulness for these non-clinical services, and the founder conflict-of-interest firewall, must be confirmed by counsel before launch (see <code>docs/ATTORNEY-BRIEF.md</code>).</p>
 </div>
 </section>
 
